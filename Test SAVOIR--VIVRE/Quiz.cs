@@ -50,13 +50,21 @@ namespace Test_SAVOIR__VIVRE
             Console.WriteLine($"Twój wynik: {score}/{Questions.Count}");
         }
 
-        private int GetUserAnswer()
+        private int GetUserAnswer(Question question)
         {
             int userAnswer = -1;
+            bool parseResult;
             do
             {
-                Console.Write("Podaj numer poprawnej odpowiedzi: ");
-            } while (!int.TryParse(Console.ReadLine(), out userAnswer) || userAnswer < 1 || userAnswer > Questions[Questions.Count - 1].Options.Count);
+                Console.WriteLine();
+                Console.WriteLine("Podaj numer poprawnej odpowiedzi: ");
+                parseResult = int.TryParse(Console.ReadLine(), out userAnswer);
+
+                if (!parseResult)
+                {
+                    Console.WriteLine("Nieprawidłowa wartość");
+                }
+            } while (userAnswer < 1 || userAnswer > question.Options.Count);
 
             return userAnswer;
         }
