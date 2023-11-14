@@ -28,13 +28,14 @@ namespace Test_SAVOIR__VIVRE
             foreach (var question in Questions)
             {
                 Console.WriteLine(question.Text);
+                Console.WriteLine();
 
                 for (int i = 0; i < question.Options.Count; i++)
                 {
                     Console.WriteLine($"{i + 1}. {question.Options[i].Text}");
                 }
 
-                int userAnswer = GetUserAnswer();
+                int userAnswer = GetUserAnswer(question);
 
                 if (question.Options[userAnswer - 1].IsCorrect)
                 {
@@ -45,6 +46,12 @@ namespace Test_SAVOIR__VIVRE
                 {
                     Console.WriteLine($"Błędna odpowiedź. Poprawna odpowiedź to: {GetCorrectAnswerIndex(question) + 1}. {question.Options[GetCorrectAnswerIndex(question)].Text}\n");
                 }
+
+                Console.WriteLine("Naciśnij <ENTER>, aby przejść dalej.");
+
+                while (Console.ReadKey().Key != ConsoleKey.Enter) { }
+
+                Console.Clear();
             }
 
             Console.WriteLine($"Twój wynik: {score}/{Questions.Count}");
@@ -78,8 +85,8 @@ namespace Test_SAVOIR__VIVRE
                     return i;
                 }
             }
+
             return -1;
         }
     }
-
 }
