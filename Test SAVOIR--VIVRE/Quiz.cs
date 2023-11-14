@@ -9,7 +9,7 @@ namespace Test_SAVOIR__VIVRE
 {
     internal class Quiz
     {
-        public List<Question> Questions { get; set; }
+        public List<Question> Questions { get; init; }
 
         public Quiz()
         {
