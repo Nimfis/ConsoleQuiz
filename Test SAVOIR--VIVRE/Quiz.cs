@@ -30,21 +30,21 @@ namespace Test_SAVOIR__VIVRE
                 Console.WriteLine(question.Text);
                 Console.WriteLine();
 
-                for (int i = 0; i < question.Options.Count; i++)
+                for (int i = 0; i < question.Answers.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {question.Options[i].Text}");
+                    Console.WriteLine($"{i + 1}. {question.Answers[i].Text}");
                 }
 
                 int userAnswer = GetUserAnswer(question);
 
-                if (question.Options[userAnswer - 1].IsCorrect)
+                if (question.Answers[userAnswer - 1].IsCorrect)
                 {
                     Console.WriteLine("Poprawna odpowiedź!\n");
                     score++;
                 }
                 else
                 {
-                    Console.WriteLine($"Błędna odpowiedź. Poprawna odpowiedź to: {GetCorrectAnswerIndex(question) + 1}. {question.Options[GetCorrectAnswerIndex(question)].Text}\n");
+                    Console.WriteLine($"Błędna odpowiedź. Poprawna odpowiedź to: {GetCorrectAnswerIndex(question) + 1}. {question.Answers[GetCorrectAnswerIndex(question)].Text}\n");
                 }
 
                 Console.WriteLine("Naciśnij <ENTER>, aby przejść dalej.");
@@ -71,16 +71,16 @@ namespace Test_SAVOIR__VIVRE
                 {
                     Console.WriteLine("Nieprawidłowa wartość");
                 }
-            } while (userAnswer < 1 || userAnswer > question.Options.Count);
+            } while (userAnswer < 1 || userAnswer > question.Answers.Count);
 
             return userAnswer;
         }
 
         private int GetCorrectAnswerIndex(Question question)
         {
-            for (int i = 0; i < question.Options.Count; i++)
+            for (int i = 0; i < question.Answers.Count; i++)
             {
-                if (question.Options[i].IsCorrect)
+                if (question.Answers[i].IsCorrect)
                 {
                     return i;
                 }
