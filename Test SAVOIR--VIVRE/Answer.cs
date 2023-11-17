@@ -16,10 +16,9 @@ namespace Test_SAVOIR__VIVRE
             Text = text;
             IsCorrect = isCorrect;
         }
-        public ConsoleColor TextColor
-        {
-            get => IsCorrect ? ConsoleColor.Green : ConsoleColor.Red; 
-        }
 
+        public ConsoleColor FinalAnswerColor => IsCorrect ? ConsoleColor.Green : ConsoleColor.Red;
+
+        public const ConsoleColor TextColor = ConsoleColor.Yellow;
     }
 }
