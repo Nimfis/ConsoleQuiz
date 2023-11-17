@@ -25,12 +25,14 @@ namespace Test_SAVOIR__VIVRE
         {
             Answer CorrectAnswer = new Answer(Text, true);
             Answer WrongAnswer = new Answer(Text, false);
+            
+
             int score = 0;
 
             foreach (var question in Questions)
             {
                 Console.ForegroundColor = Question.TextColor;
-
+               
                 Console.WriteLine(question.Text);
                 Console.WriteLine();
               
@@ -60,6 +62,8 @@ namespace Test_SAVOIR__VIVRE
 
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("Naciśnij <ENTER>, aby przejść dalej.");
+
+                InputBlocker.BlockUserInput();
 
                 while (Console.ReadKey().Key != ConsoleKey.Enter) { }
 
