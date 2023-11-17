@@ -9,6 +9,7 @@ namespace Test_SAVOIR__VIVRE
     internal class Question
     {
         internal int CorrectAnswerIndex;
+        private bool isCorrect;
 
         public string Text { get; init; }
         public List<Answer> Answers { get; init; }
@@ -21,6 +22,6 @@ namespace Test_SAVOIR__VIVRE
             CorrectOptionIndex = correctOptionIndex;
         }
 
-        public const ConsoleColor TextColor = ConsoleColor.DarkCyan;
+        public const ConsoleColor TextColor = ConsoleColor.DarkCyan;  
     }
 }
