@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Test_SAVOIR__VIVRE.Persistence.Database.Entities;
 
 namespace Test_SAVOIR__VIVRE.Persistence.Database.Service
 {
