@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Test_SAVOIR__VIVRE.Model;
 
 namespace Test_SAVOIR__VIVRE
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test_SAVOIR__VIVRE
+namespace Test_SAVOIR__VIVRE.Model
 {
     internal class Question
     {
@@ -26,6 +26,6 @@ namespace Test_SAVOIR__VIVRE
             }
         }
 
-        public const ConsoleColor TextColor = ConsoleColor.DarkCyan;  
+        public const ConsoleColor TextColor = ConsoleColor.DarkCyan;
     }
 }
