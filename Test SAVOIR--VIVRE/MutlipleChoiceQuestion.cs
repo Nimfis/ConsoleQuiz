@@ -8,20 +8,18 @@ namespace Test_SAVOIR__VIVRE
 {
     internal class MutlipleChoiceQuestion : Question
     {
-        internal class MultipleChoiceQuestion : Question
+        private static int userAnswer;
+
+        public bool IsAnswerCorrect(int userAnswer)
         {
-            public int CorrectOptionIndex { get; }
-
-            public MultipleChoiceQuestion(string text, List<Answer> answers, int correctOptionIndex)
-                : base(text, answers, 0) 
-            {
-                CorrectOptionIndex = correctOptionIndex;
-            }
-
-            public bool IsAnswerCorrect(int userAnswer)
-            {
-                return userAnswer == CorrectOptionIndex;
-            }
+            return userAnswer == CorrectOptionIndex;
+        }
+        public int CorrectOptionIndex { get; init; }
+    
+        public MutlipleChoiceQuestion(string text, List<Answer> answers, int correctOptionIndex)
+            : base(text, answers, userAnswer)
+        {
+            CorrectOptionIndex = correctOptionIndex;
         }
     }
 }

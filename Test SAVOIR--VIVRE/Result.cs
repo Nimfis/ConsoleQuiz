@@ -75,7 +75,6 @@ namespace Test_SAVOIR__VIVRE
             TextCenterer.PrintCenteredText(" - - - - - - - - - - - - - - - - - - - - - - ");
 
             Console.ResetColor();
-
         }
 
         private static List<Result> LoadResults()
