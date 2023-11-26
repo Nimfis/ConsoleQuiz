@@ -1,6 +1,4 @@
-﻿using static System.Formats.Asn1.AsnWriter;
-
-namespace Test_SAVOIR__VIVRE
+﻿namespace Test_SAVOIR__VIVRE
 {
     internal class Program
     {
