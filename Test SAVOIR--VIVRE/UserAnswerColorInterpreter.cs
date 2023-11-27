@@ -7,7 +7,7 @@ using Test_SAVOIR__VIVRE.Model;
 
 namespace Test_SAVOIR__VIVRE
 {
-    internal class UserAnswerColorInterpreter : Question
+    internal class UserAnswerColorInterpreter : QuestionModel
     {
         public bool CorrectAnswer { get; init; }
 

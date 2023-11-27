@@ -7,7 +7,7 @@ using Test_SAVOIR__VIVRE.Model;
 
 namespace Test_SAVOIR__VIVRE
 {
-    internal class MutlipleChoiceQuestion : Question
+    internal class MutlipleChoiceQuestion : QuestionModel
     {
         private static int userAnswer;
 

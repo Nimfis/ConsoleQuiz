@@ -1,11 +1,11 @@
 ﻿namespace Test_SAVOIR__VIVRE.Model
 {
-    public class Question
+    public class QuestionModel
     {
         public string Text { get; init; }
         public List<Answer> Answers { get; init; }
 
-        public Question(string text, List<Answer> answers, int v)
+        public QuestionModel(string text, List<Answer> answers, int v)
         {
             Text = text;
             Answers = answers;

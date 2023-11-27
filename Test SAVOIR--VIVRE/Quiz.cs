@@ -14,13 +14,13 @@ namespace Test_SAVOIR__VIVRE
 
     internal class Quiz
     {
-        public List<Question> Questions { get; init; }
+        public List<QuestionModel> Questions { get; init; }
         public string Text { get; init; }
         public bool IsCorrect { get; init; }
         public object Score { get; private set; }
         public string UserName { get; private set; }
 
-        public Quiz(List<Question> questions)
+        public Quiz(List<QuestionModel> questions)
         {
             Questions = questions;
         }
@@ -34,7 +34,7 @@ namespace Test_SAVOIR__VIVRE
 
             foreach (var question in Questions)
             {
-                Console.ForegroundColor = Question.TextColor;
+                Console.ForegroundColor = QuestionModel.TextColor;
                
                 TextCenterer.PrintCenteredText(question.Text);
                 Console.WriteLine();
@@ -83,7 +83,7 @@ namespace Test_SAVOIR__VIVRE
             Result.DisplayResults();
         }
 
-        private int GetUserAnswer(Question question)
+        private int GetUserAnswer(QuestionModel question)
         {
             int userAnswer = -1;
             bool parseResult;
@@ -111,7 +111,7 @@ namespace Test_SAVOIR__VIVRE
             return userAnswer;
         }
 
-        private int GetCorrectAnswerIndex(Question question)
+        private int GetCorrectAnswerIndex(QuestionModel question)
         {
             for (int i = 0; i < question.Answers.Count; i++)
             {

@@ -1,4 +1,10 @@
 ﻿namespace Test_SAVOIR__VIVRE.Persistence.Database.Entities
 {
-    public record Answer(Guid Id, Question Question, bool Correct, string Content);
+    public record Answer()
+    {
+        public required Guid Id { get; init; }
+        public required Question Question { get; init; }
+        public required bool Correct { get; init; }
+        public required string Content { get; init; }
+    }
 }
