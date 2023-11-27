@@ -10,7 +10,7 @@ namespace Test_SAVOIR__VIVRE.Persistence.Database.Service
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=QuizDb;User Id=sa;Password=P@$$w0rd;");
+            optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=QuizDb;User Id=sa;Password=P@$$w0rd;Encrypt=False;");
             base.OnConfiguring(optionsBuilder);
         }
     }
