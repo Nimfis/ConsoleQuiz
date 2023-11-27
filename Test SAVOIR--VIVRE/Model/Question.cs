@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Test_SAVOIR__VIVRE.Model
+﻿namespace Test_SAVOIR__VIVRE.Model
 {
-    internal class Question
+    public class Question
     {
         public string Text { get; init; }
         public List<Answer> Answers { get; init; }

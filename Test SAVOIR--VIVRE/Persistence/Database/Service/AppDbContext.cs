@@ -10,7 +10,6 @@ namespace Test_SAVOIR__VIVRE.Persistence.Database.Service
         public AppDbContext(DbContextOptions<AppDbContext> options)
             :base(options)
         {
-            
         }
     }
 }

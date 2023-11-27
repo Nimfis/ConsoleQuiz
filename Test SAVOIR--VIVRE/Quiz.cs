@@ -18,22 +18,17 @@ namespace Test_SAVOIR__VIVRE
         public string Text { get; init; }
         public bool IsCorrect { get; init; }
         public object Score { get; private set; }
-
         public string UserName { get; private set; }
 
-        public Quiz() => Questions = new List<Question>();
-
-        public void AddQuestion(Question question)
+        public Quiz(List<Question> questions)
         {
-            Questions.Add(question);
+            Questions = questions;
         }
 
         public void StartQuiz()
         {
-            Answer CorrectAnswer = new Answer(Text, true);
-            Answer WrongAnswer = new Answer(Text, false);
-            
-            Quiz Quiz = new Quiz();
+            var correctAnswer = new Answer(Text, true);
+            var wrongAnswer = new Answer(Text, false);
 
             int score = 0;
 
@@ -58,13 +53,13 @@ namespace Test_SAVOIR__VIVRE
 
                 if (question.Answers[userAnswer - 1].IsCorrect)
                 {
-                    Console.ForegroundColor = CorrectAnswer.FinalAnswerColor;
+                    Console.ForegroundColor = correctAnswer.FinalAnswerColor;
                     TextCenterer.PrintCenteredText("Poprawna odpowiedź!\n");
                     score++;
                 }
                 else
                 {
-                    Console.ForegroundColor = WrongAnswer.FinalAnswerColor;
+                    Console.ForegroundColor = wrongAnswer.FinalAnswerColor;
                     TextCenterer.PrintCenteredText($"Błędna odpowiedź. Poprawna odpowiedź to: {GetCorrectAnswerIndex(question) + 1}. {question.Answers[GetCorrectAnswerIndex(question)].Text}\n");
                 }
 
