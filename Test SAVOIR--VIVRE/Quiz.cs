@@ -1,127 +1,153 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using Test_SAVOIR__VIVRE.Persistence.Database.Entities;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Test_SAVOIR__VIVRE.Model;
-using static System.Formats.Asn1.AsnWriter;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Test_SAVOIR__VIVRE
 {
 
     internal class Quiz
     {
-        public List<QuestionModel> Questions { get; init; }
-        public string Text { get; init; }
+        public IQueryable<Question> Questions { get; init; }
+        public IQueryable<Answer> Answers { get; init; }
         public bool IsCorrect { get; init; }
         public object Score { get; private set; }
         public string UserName { get; private set; }
 
-        public Quiz(List<QuestionModel> questions)
+        public Quiz(IQueryable<Question> questions, IQueryable<Answer> answers)
         {
             Questions = questions;
         }
 
-        public void StartQuiz()
+        public async void StartQuizAsync()
         {
-            var correctAnswer = new Answer(Text, true);
-            var wrongAnswer = new Answer(Text, false);
+            var questions = await GetRandomQuestionsAsync();
 
-            int score = 0;
-
-            foreach (var question in Questions)
+            if (questions is null)
             {
-                Console.ForegroundColor = QuestionModel.TextColor;
-               
-                TextCenterer.PrintCenteredText(question.Text);
-                Console.WriteLine();
-              
-                Console.ForegroundColor = Answer.TextColor;
+                throw new Exception("Tried to get random questions, but got null.");
+            }
 
-                for (int i = 0; i < question.Answers.Count; i++)
+            var score = 0;
+            foreach (var (question, answers) in questions)
+            {
+                TextCenterer.PrintCenteredText(question.Content);
+
+                for (int i = 1; i <= answers.Count; i++)
                 {
-                    TextCenterer.PrintCenteredText($"{i + 1}. {question.Answers[i].Text}");
+                    var answer = $"{i}. {answers[i - 1].Content}";
+                    TextCenterer.PrintCenteredText(answer);
                 }
 
-                Console.ForegroundColor = ConsoleColor.White;
+                var userAnswerIndex = GetUserAnswerIndex(answers.Count);
+                var userAnswer = answers[userAnswerIndex];
 
-                int userAnswer = GetUserAnswer(question);
-                
-
-                if (question.Answers[userAnswer - 1].IsCorrect)
+                if (userAnswer.Correct)
                 {
-                    Console.ForegroundColor = correctAnswer.FinalAnswerColor;
-                    TextCenterer.PrintCenteredText("Poprawna odpowiedź!\n");
-                    score++;
-                }
-                else
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    TextCenterer.PrintCenteredText("Poprawna odpowiedź!");
+                    score += question.Points;
+                }            
+                else 
                 {
-                    Console.ForegroundColor = wrongAnswer.FinalAnswerColor;
-                    TextCenterer.PrintCenteredText($"Błędna odpowiedź. Poprawna odpowiedź to: {GetCorrectAnswerIndex(question) + 1}. {question.Answers[GetCorrectAnswerIndex(question)].Text}\n");
+                    var correctAnswer = answers.First(a => a.Correct);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    TextCenterer.PrintCenteredText($"Błędna odpowiedź.\n Poprawna odpowiedź to {correctAnswer.Content}");
                 }
 
-                Console.ForegroundColor = ConsoleColor.White;
-                TextCenterer.PrintCenteredText("Naciśnij <ENTER>, aby przejść dalej.");
-
-                InputBlocker.BlockUserInput();
-
+                Console.ResetColor();
+                InputBlocker.WaitForEnter();
                 Console.Clear();
             }
 
             Score = score;
 
-            TextCenterer.PrintCenteredText($"Twój wynik: {Score}/{Questions.Count}");
+            TextCenterer.PrintCenteredText($"Twój wynik: {Score}/{questions.Count}");
 
             User user = new User();
 
             string userName = user.ValidUserName();
-            
-            Result.SaveResult(userName, (int)Score, Questions.Count);
+
+            Result.SaveResult(userName, (int)Score, questions.Count);
             Result.DisplayResults();
         }
+        private async Task<(Question question, List<Answer> answers)?> GetQuestionWithAnswersAsync(Guid id)
+        {
+            var questionQuery = from questions in Questions
+                                where questions.Id == id
+                                select questions;
 
-        private int GetUserAnswer(QuestionModel question)
+            var question = questionQuery.FirstOrDefault();
+            //var question1 = Questions.FirstOrDefault(question => question.Id == id);
+
+            if (question is null)
+            {
+                Console.WriteLine($"Question with ID {id} not found.");
+                return null;
+            }
+
+            var answersQuery = from a in Answers
+                               join q in Questions on a.Id equals q.Id
+                               where a.Question.Id == id
+                               select a;
+
+            var answers = await answersQuery.Include(a => a.Question).ToListAsync();
+
+            //var answers1 = await Answers
+            //    .Include(a => a.Question)
+            //    .Where(a => a.Question.Id == id)
+            //    .ToListAsync();
+
+            if (!answers.Any())
+            {
+                Console.WriteLine($"Answer with QuestionID {id} not found.");
+                return null;
+            }
+
+            return (question, answers);
+        }
+
+        private async Task<Dictionary<Question, List<Answer>>?> GetRandomQuestionsAsync(int numberOfQuestions = 10)
+        {
+            var randomQuestions = new Dictionary<Question, List<Answer>>();
+
+            var questionsIDs = Questions
+                .OrderBy(q => Guid.NewGuid())
+                .Take(numberOfQuestions)
+                .Select(q => q.Id);
+
+            foreach (var questionID in questionsIDs)
+            {
+                (Question question, List<Answer> answers)? questionsWithAnswers = await GetQuestionWithAnswersAsync(questionID);
+                if (questionsWithAnswers is null)
+                {
+                    Console.WriteLine($"Couldn't found question with answers for that ID.");
+                    return null;
+                }
+                randomQuestions.Add(questionsWithAnswers.Value.question, questionsWithAnswers.Value.answers);
+            }
+
+            return randomQuestions;
+        }
+
+        private int GetUserAnswerIndex(int answersNumber)
         {
             int userAnswer = -1;
             bool parseResult;
 
-            Answer WrongAnswer = new Answer(Text, false);
-
             do
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-
                 Console.WriteLine();
-                TextCenterer.PrintCenteredText("Podaj numer poprawnej odpowiedzi: ");
-
-                Console.ResetColor();
+                TextCenterer.PrintCenteredText("podaj numer poprawnej odpowiedzi: ");
 
                 parseResult = int.TryParse(Console.ReadLine(), out userAnswer);
 
-                if (!parseResult || parseResult == userAnswer > question.Answers.Count)
+                if (!parseResult || parseResult == userAnswer > answersNumber)
                 {
-                    Console.ForegroundColor = WrongAnswer.FinalAnswerColor;
-                    TextCenterer.PrintCenteredText("Nieprawidłowa wartość");
+                    TextCenterer.PrintCenteredText("nieprawidłowa wartość");
                 }
-            } while (userAnswer < 1 || userAnswer > question.Answers.Count);
+            } while (userAnswer < 1 || userAnswer > answersNumber);
 
-            return userAnswer;
-        }
-
-        private int GetCorrectAnswerIndex(QuestionModel question)
-        {
-            for (int i = 0; i < question.Answers.Count; i++)
-            {
-                if (question.Answers[i].IsCorrect)
-                {
-                    return i;
-                }
-            }
-
-            return -1;
+            return userAnswer - 1;
         }
     }
 }

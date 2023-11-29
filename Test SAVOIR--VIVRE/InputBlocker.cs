@@ -8,7 +8,7 @@ namespace Test_SAVOIR__VIVRE
 {
     static class InputBlocker
     {
-        public static void BlockUserInput()
+        public static void WaitForEnter()
         {
             Console.TreatControlCAsInput = true;
 

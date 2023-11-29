@@ -9,8 +9,10 @@ namespace Test_SAVOIR__VIVRE
         static void Main()
         {
             AppDbContext = new AppDbContext();
-            var quiz = new Quiz(QuestionsData.Questions);
-            quiz.StartQuiz();
+            var questions = AppDbContext.Questions.AsNoTracking().AsQueryable();
+            var answers = AppDbContext.Answers.AsNoTracking().AsQueryable();
+            var quiz = new Quiz(questions, answers);
+            quiz.StartQuizAsync();
         }
     }
 }
