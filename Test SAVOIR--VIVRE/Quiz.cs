@@ -1,22 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Test_SAVOIR__VIVRE.Persistence.Database.Entities;
-using System.Linq;
+using Test_SAVOIR__VIVRE.Persistence.Database.Service;
 
 namespace Test_SAVOIR__VIVRE
 {
 
     internal class Quiz
     {
-        public IQueryable<Question> Questions { get; init; }
-        public IQueryable<Answer> Answers { get; init; }
-        public bool IsCorrect { get; init; }
-        public object Score { get; private set; }
-        public string UserName { get; private set; }
+        private IQueryable<Question> Questions => _appDbContext.Questions.AsNoTracking().AsQueryable();
+        private IQueryable<Answer> Answers => _appDbContext.Answers.AsNoTracking().AsQueryable();
+        public int Score { get; private set; }
 
-        public Quiz(IQueryable<Question> questions, IQueryable<Answer> answers)
+        private readonly IAppDbContext _appDbContext;
+        public Quiz(IAppDbContext appDbContext)
         {
-            Questions = questions;
-            Answers = answers;
+            _appDbContext = appDbContext;
         }
 
         public async Task StartQuizAsync()
