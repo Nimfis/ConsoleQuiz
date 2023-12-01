@@ -11,7 +11,8 @@ namespace Test_SAVOIR__VIVRE
         public static void WaitForEnter()
         {
             Console.TreatControlCAsInput = true;
-
+            Console.WriteLine();
+            TextCenterer.PrintCenteredText("Nacisnij <ENTER> aby kontynuować.");
             while (true)
             {
                 if (Console.KeyAvailable)
