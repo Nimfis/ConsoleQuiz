@@ -18,6 +18,7 @@ namespace Test_SAVOIR__VIVRE
             {
                 Console.WriteLine();
                 Console.Write("Podaj swoje imię:");
+                Console.ForegroundColor = ConsoleColor.Yellow;
 
                 UserName = Console.ReadLine();
 
@@ -25,6 +26,7 @@ namespace Test_SAVOIR__VIVRE
 
                 if (invalidUserName)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("To pole nie może być puste.");
                 }
             } while (invalidUserName);

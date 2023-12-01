@@ -31,7 +31,10 @@ namespace Test_SAVOIR__VIVRE
             var score = 0;
             foreach (var (question, answers) in questions)
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
                 TextCenterer.PrintCenteredText(question.Content);
+                Console.WriteLine();
+                Console.ResetColor();
 
                 for (int i = 1; i <= answers.Count; i++)
                 {
@@ -39,6 +42,7 @@ namespace Test_SAVOIR__VIVRE
                     TextCenterer.PrintCenteredText(answer);
                 }
 
+                Console.ForegroundColor = ConsoleColor.Blue;
                 var userAnswerIndex = GetUserAnswerIndex(answers.Count);
                 var userAnswer = answers[userAnswerIndex];
 
@@ -52,7 +56,10 @@ namespace Test_SAVOIR__VIVRE
                 {
                     var correctAnswer = answers.First(a => a.Correct);
                     Console.ForegroundColor = ConsoleColor.Red;
-                    TextCenterer.PrintCenteredText($"Błędna odpowiedź.\n Poprawna odpowiedź to {correctAnswer.Content}");
+                    TextCenterer.PrintCenteredText($"Błędna odpowiedź.");
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    TextCenterer.PrintCenteredText($"Poprawna odpowiedź to: {correctAnswer.Content}");
                 }
 
                 Console.ResetColor();
@@ -61,8 +68,9 @@ namespace Test_SAVOIR__VIVRE
             }
 
             Score = score;
-
+            Console.ForegroundColor= ConsoleColor.Yellow;
             TextCenterer.PrintCenteredText($"Twój wynik: {Score}/{questions.Count}");
+            Console.ResetColor();
 
             User user = new User();
 
@@ -138,14 +146,18 @@ namespace Test_SAVOIR__VIVRE
 
             do
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine();
-                TextCenterer.PrintCenteredText("podaj numer poprawnej odpowiedzi: ");
+                TextCenterer.PrintCenteredText("Podaj numer poprawnej odpowiedzi: ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
 
                 parseResult = int.TryParse(Console.ReadLine(), out userAnswer);
 
+                Console.ForegroundColor = ConsoleColor.Red;
+
                 if (!parseResult || parseResult == userAnswer > answersNumber)
                 {
-                    TextCenterer.PrintCenteredText("nieprawidłowa wartość");
+                    TextCenterer.PrintCenteredText("Nieprawidłowa wartość");
                 }
             } while (userAnswer < 1 || userAnswer > answersNumber);
 
