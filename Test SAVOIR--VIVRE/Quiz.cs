@@ -16,9 +16,10 @@ namespace Test_SAVOIR__VIVRE
         public Quiz(IQueryable<Question> questions, IQueryable<Answer> answers)
         {
             Questions = questions;
+            Answers = answers;
         }
 
-        public async void StartQuizAsync()
+        public async Task StartQuizAsync()
         {
             var questions = await GetRandomQuestionsAsync();
 
@@ -86,7 +87,7 @@ namespace Test_SAVOIR__VIVRE
             }
 
             var answersQuery = from a in Answers
-                               join q in Questions on a.Id equals q.Id
+                               join q in Questions on a.Question.Id equals q.Id
                                where a.Question.Id == id
                                select a;
 
@@ -110,10 +111,11 @@ namespace Test_SAVOIR__VIVRE
         {
             var randomQuestions = new Dictionary<Question, List<Answer>>();
 
-            var questionsIDs = Questions
+            var questionsIDs = await Questions
                 .OrderBy(q => Guid.NewGuid())
                 .Take(numberOfQuestions)
-                .Select(q => q.Id);
+                .Select(q => q.Id)
+                .ToListAsync();
 
             foreach (var questionID in questionsIDs)
             {

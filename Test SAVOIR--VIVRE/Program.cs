@@ -6,13 +6,13 @@ namespace Test_SAVOIR__VIVRE
     internal static class Program
     {
         private static IAppDbContext AppDbContext;
-        static void Main()
+        static async Task Main()
         {
             AppDbContext = new AppDbContext();
             var questions = AppDbContext.Questions.AsNoTracking().AsQueryable();
             var answers = AppDbContext.Answers.AsNoTracking().AsQueryable();
             var quiz = new Quiz(questions, answers);
-            quiz.StartQuizAsync();
+            await quiz.StartQuizAsync();
         }
     }
 }
