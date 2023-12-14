@@ -77,6 +77,7 @@ namespace Test_SAVOIR__VIVRE
             Result.SaveResult(userName, (int)Score, questions.Count);
             Result.DisplayResults();
         }
+
         private async Task<(Question question, List<Answer> answers)?> GetQuestionWithAnswersAsync(Guid id)
         {
             var questionQuery = from questions in Questions

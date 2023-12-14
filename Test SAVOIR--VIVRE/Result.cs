@@ -77,7 +77,13 @@ namespace Test_SAVOIR__VIVRE
             if (File.Exists(ResultFileName))
             {
                 string json = File.ReadAllText(ResultFileName);
-                results = JsonConvert.DeserializeObject<List<Result>>(json);
+                var deserializedJson = JsonConvert.DeserializeObject<List<Result>>(json);
+                if (deserializedJson is null)
+                {
+                    throw new Exception($"{nameof(deserializedJson)} is null.");
+                }
+
+                results = deserializedJson;
             }
             else
             {

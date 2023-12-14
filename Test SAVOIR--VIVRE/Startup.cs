@@ -10,6 +10,7 @@ namespace Test_SAVOIR__VIVRE
         {
             this.appDbContext = appDbContext;
         }
+
         public async Task RunAsync()
         {
             var quiz = new Quiz(appDbContext);
